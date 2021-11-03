@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>yyshop</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" th:src="@{/js/jquery-3.1.1.min.js}">
+</head>
+<body class="container">
+<!--<img th:src="@{/img/bg.jpg}">-->
+    <br>
+    <h1>Tracy  <small>, Person Info</small></h1>
+    <br>
+    <div class="alert alert-success  alert-dismissible" role="alert">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+
+        I've done the paging
+    </div>
+    <br>
+    <div class="panel panel-default">
+        <div class="panel-heading">Student</div>
+        <table class="table table-striped">
+            <THEAD>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Password</th>
+                    <th>Phone</th>
+                    <th>realName</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </THEAD>
+            <TBODY>
+                <tr th:each = "user:${all}">
+                    <td th:text="${user.userId}" ></td>
+                    <td th:text="${user.userName}" ></td>
+                    <td th:text="${user.password}" ></td>
+                    <td th:text="${user.phone}" ></td>
+                    <td th:text="${user.realName}" ></td>
+                    <td ><a th:href="${'/edit/'+user.userId}">edit</a></td>
+                    <td><a th:href="${'/del/'+user.userId}" >delete</a></td>
+                </tr>
+            </TBODY>
+        </table>
+    </div>
+    <a class="btn btn-info" href="/toAdd" role="button">Add</a>
+    &nbsp;&nbsp;&nbsp;
+    <a class="btn btn-info" href="/seach" role="button">Seach</a>
+
+<div>
+
+
+
+</div>
+
+<div class="modal-footer no-margin-top">
+    <ul class="pagination pull-right no-margin">
+
+        <!-- 首页 -->
+        <li>
+            <a th:href="'/list?pageNum=0'">index</a>
+        </li>
+
+        <!-- 上一页 -->
+        <li th:if="${all.hasPrevious()}">
+            <a th:href="'/list?pageNum=' + ${all.previousPageable().getPageNumber()}" th:text="prev"></a>
+        </li>
+
+        <!-- 中间页 -->
+        <li th:each="pageNum:${#numbers.sequence(0, all.getTotalPages() - 1)}">
+            <a th:href="'/list?pageNum=' + ${pageNum}" th:text="${pageNum + 1}" th:if="${pageNum ne all.pageable.getPageNumber()}"></a>
+            <a th:href="'/list?pageNum=' + ${pageNum}" th:text="${pageNum + 1}" th:if="${pageNum eq all.pageable.getPageNumber()}" th:style="'font-weight:bold;background: #6faed9;'"></a>
+        </li>
+
+        <!-- 下一页 -->
+        <li th:if="${all.hasNext()}">
+            <a th:href="'/list?pageNum=' + ${all.nextPageable().getPageNumber()}" th:text="next"></a>
+        </li>
+
+        <!-- 尾页 -->
+        <li>
+            <a th:href="'/list?pageNum=' + ${all.getTotalPages() - 1}">last</a>
+        </li>
+
+    </ul>
+</div>
+</body>
+</html>
